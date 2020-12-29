@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wd.demo.dao.UserRoleDao">
+    <resultMap type="com.wd.demo.po.UserRoleEntity" id="UserRoleMap">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="rolename" property="rolename"/>
+    </resultMap>
+
+    <update id="UpdateUserRole" parameterType="com.wd.demo.po.UserRoleEntity">
+            update ZUserRoleRelation set zr_id=#{zr_id} where zur_id=#{id}
+    </update>
+    <select id="selectUserRole" resultMap="UserRoleMap">
+        select  zur.zur_id as id ,zu.username as username ,zr.role_name as rolename  from  ZUserRoleRelation zur,ZRole zr,ZUser  zu
+
+        WHERE zur.zu_id=zu.zu_id and zur.zr_id=zr.zr_id
+    </select>
+
+    <select id="QueryUserRoleById" parameterType="int" resultMap="UserRoleMap">
+                select  zur.zur_id as id ,zu.username as username ,zr.role_name as rolename  from  ZUserRoleRelation zur,ZRole zr,ZUser  zu
+
+        WHERE zur.zu_id=zu.zu_id and zur.zr_id=zr.zr_id and zur.zu_id=#{id}
+    </select>
+
+    <insert id="insertUserRole" parameterType="com.wd.demo.po.ZUserEntity" >
+        INSERT ZUserRoleRelation
+        VALUES (0,#{zuId},2 )
+
+    </insert>
+</mapper>

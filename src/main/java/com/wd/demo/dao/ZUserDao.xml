@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wd.demo.dao.ZUserDao">
+    <resultMap type="com.wd.demo.po.ZUserEntity" id="userMap">
+        <id column="zu_id" property="zuId"/>
+        <result column="login_name" property="loginName"/>
+        <result column="password" property="password"/>
+        <result column="username" property="username"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="gen_time" property="genTime"/>
+        <result column="login_time" property="loginTime"/>
+        <result column="last_login_time" property="lastLoginTime"/>
+        <result column="count" property="count"/>
+
+    </resultMap>
+
+    <!--根据用户名查询用户信息-->
+    <select id="QueryUserByUserName" parameterType="com.wd.demo.po.ZUserEntity" resultMap="userMap">
+        select * from ZUser where username = #{username}
+    </select>
+
+    <!--查询所有用户-->
+    <select id="queryUser"  resultMap="userMap">
+            select * from ZUser
+    </select>
+    <!--登陆时修改时间和登陆次数-->
+    <update id="updateLoginTime" parameterType="com.wd.demo.po.ZUserEntity" >
+    UPDATE ZUser set
+        count=count+1,
+            <if test="lastLoginTime!=null">
+                last_login_time=#{lastLoginTime}
+            </if>
+
+
+        WHERE login_name = #{loginName} and password = #{password}
+
+    </update>
+
+
+    <insert id="adduser" parameterType="com.wd.demo.po.ZUserEntity">
+        INSERT ZUser
+        VALUES(0,
+        #{loginName},
+        #{password},
+        #{username},
+        #{phone},
+        #{email},
+        #{genTime},
+        null ,
+        #{count})
+    </insert>
+
+    <select id="selectuser" parameterType="com.wd.demo.po.ZUserEntity" resultType="com.wd.demo.po.ZUserEntity">
+
+    select * from ZUser where login_name = #{loginName}
+
+    </select>
+
+    <select id="userall" parameterType="com.wd.demo.po.ZUserEntity" resultMap="userMap">
+
+    select * from ZUser
+    <where>
+        <if test="username!=null and username!=''">
+            username like '%${username}%'
+        </if>
+    </where>
+
+    </select>
+
+    <delete id="deleteUserById" parameterType="java.lang.String">
+            delete from ZUser where zu_id=#{id}
+    </delete>
+
+
+    <select id="getUserId" parameterType="com.wd.demo.po.ZUserEntity" resultMap="userMap">
+        select * from ZUser where login_name =#{loginName}
+    </select>
+</mapper>

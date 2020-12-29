@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户登陆次数的曲线图</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../../static/lib/layui/css/layui.css">
+
+    <!--    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>-->
+    <!--    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>-->
+
+
+</head>
+<body>
+<div class="weadmin-body">
+    <!-- 为 ECharts 准备一个具备大小（宽高）的 DOM -->
+    <div id="main" style="width: 100%;height:400px;"></div>
+</div>
+
+<script src="../../static/lib/layui/layui.js"></script>
+<script src="../../static/lib/jquery/jquery-3.4.1.min.js"></script>
+<script src="../../static/lib/js/echarts.min.js"></script>
+
+
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main'));
+    // 指定图表的配置项和数据
+    var labelRight = {
+        normal: {
+            position: 'right'
+        }
+    };
+    $(function () {
+        getData4();
+    });
+    function  getData4() {
+        $.ajax({
+            type: 'post',
+            dataType: 'text',
+            url:  'member/getData4',
+            data: {},
+            cache: false,
+            async: true,
+            success: function (data) {
+                var data = eval('(' + data + ')');
+                var data1 = new Array();
+                var data2 = new Array();
+                for(var i=0; i < data.mapName.length; i++){
+                    data1[i] = data.mapName[i];
+                    data2[i] = data.mapValue[i];
+                }
+                //alert(JSON.stringify(data));
+                var myChart = echarts.init(document.getElementById('main'));
+
+                // 指定图表的配置项和数据
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: "name : {b} <br/>grade: {c} "
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data1
+                    },
+                    yAxis: {
+                        type: 'value'
+                    },
+                    series: [{
+                        name: '登陆次数',
+                        type: 'bar',
+                        smooth: true,
+                        barCategoryGap: 25,
+                        lineStyle: {
+                            normal: {
+                                width: 3,
+                                shadowColor: 'rgba(0,0,0,0.4)',
+                                shadowBlur: 10,
+                                shadowOffsetY: 10
+                            }
+                        },
+                        data: data2,
+                    }]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option);
+            }
+        });
+    }
+</script>
+</body>
+</html>

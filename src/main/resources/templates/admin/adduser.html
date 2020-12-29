@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <meta charset="UTF-8">
+    <title>注册用户-登陆</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="../static/lib/layui/css/layui.css">
+
+    <!--    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>-->
+    <!--    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>-->
+
+    <style>
+        html, body {width: 100%;height: 100%;overflow: hidden}
+        body {background: #00FF00;}
+        body:after {content:'';background-repeat:no-repeat;background-size:cover;-webkit-filter:blur(3px);-moz-filter:blur(3px);-o-filter:blur(3px);-ms-filter:blur(3px);filter:blur(3px);position:absolute;top:0;left:0;right:0;bottom:0;z-index:-1;}
+        .layui-container {width: 100%;height: 100%;overflow: hidden}
+        .admin-login-background {width:360px;height:300px;position:absolute;left:50%;top:40%;margin-left:-180px;margin-top:-100px;}
+        .logo-title {text-align:center;letter-spacing:2px;padding:14px 0;}
+        .logo-title h1 {color:#1E9FFF;font-size:25px;font-weight:bold;}
+        .login-form {background-color:#fff;border:1px solid #fff;border-radius:3px;padding:14px 20px;box-shadow:0 0 8px #eeeeee;}
+        .login-form .layui-form-item {position:relative;}
+        .login-form .layui-form-item label {position:absolute;left:1px;top:1px;width:38px;line-height:36px;text-align:center;color:#d2d2d2;}
+        .login-form .layui-form-item input {padding-left:36px;}
+        .captcha {width:60%;display:inline-block;}
+        .captcha-img {display:inline-block;width:34%;float:right;}
+        .captcha-img img {height:34px;border:1px solid #e6e6e6;height:36px;width:100%;}
+    </style>
+    <script type="text/javascript">
+        <!--点击取消按钮跳转到登陆页面-->
+        function login() {
+            window.location.href="zyl_oa";
+        }
+
+
+
+    </script>
+</head>
+<body>
+<div class="layui-container">
+    <div class="admin-login-background">
+        <div class="layui-form login-form">
+            <form class="layui-form" action="/adduser" method="post">
+                <div class="layui-form-item logo-title">
+                    <h1>注册用户</h1>
+                    <span  id="myspan" th:text="${msg}" ></span>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-user"></label>
+                    <input type="text" id="loginName" name="loginName" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" >
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-password" ></label>
+                    <input type="password" id="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" >
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-username" ></label>
+                    <input type="text" id="username" name="username" lay-verify="required|password" placeholder="用户姓名" autocomplete="off" class="layui-input" >
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-cellphone" ></label>
+                    <input type="text" id="phone" name="phone" lay-verify="required|password" placeholder="手机号" autocomplete="off" class="layui-input" >
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-email" ></label>
+                    <input type="text" id="email" name="email" lay-verify="required|password" placeholder="电子邮箱" autocomplete="off" class="layui-input" >
+                </div>
+
+
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit="" id="btn" lay-filter="login">注册</button>
+                </div>
+            </form>
+            <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" onclick="login()" lay-filter="login">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="../static/lib/layui/layui.js"></script>
+<script src="../static/lib/jquery/jquery-3.4.1.min.js"></script>
+
+<script>
+    /*非空验证*/
+    $("#btn").click(function (){
+        var loginName =$("#loginName").val();
+        var password =$("#password").val();
+        var username =$("#username").val();
+        var phone =$("#phone").val();
+        var email =$("#email").val();
+         $("#myspan").html("");
+
+        if (loginName.length==0){
+            $("#myspan").html("账号不能为空");
+            return false;
+        }else if (password.length==0){
+            $("#myspan").html("密码不能为空");
+            return false;
+        }else if (username.length==0){
+            $("#myspan").html("用户名不能为空");
+            return false;
+        }else if (phone.length!=6){
+            $("#myspan").html("请输入正确的手机号");
+            return false;
+        }else if (email.length==0){
+            $("#myspan").html("邮箱不能为空");
+            return false;
+        }
+    })
+</script>
+</body>
+</html>

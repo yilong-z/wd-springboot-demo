@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.wd.demo.dao.LogDao">
+    <resultMap type="com.wd.demo.aop.LogEntity" id="logMap">
+        <id column="log_id" property="id"/>
+        <result column="op_type" property="optype"/>
+        <result column="content" property="content"/>
+        <result column="loginname" property="loginname"/>
+        <result column="gen_time" property="time"/>
+    </resultMap>
+    <insert id="insertLog" parameterType="com.wd.demo.aop.LogEntity" >
+        insert ZLog  values (0,#{optype},#{content},#{loginname},#{time})
+    </insert>
+    <select id="queryLog" resultMap="logMap">
+        SELECT * from ZLog
+    </select>
+
+</mapper>
